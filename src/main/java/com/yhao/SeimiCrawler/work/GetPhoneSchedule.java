@@ -70,6 +70,11 @@ public class GetPhoneSchedule {
                     Element tbodyElement = tbodyElements.get(0);
                     Elements trElements = tbodyElement.getElementsByTag("tr");
                     for (Element trElement : trElements) {
+                        Element context = trElement.getElementsByTag("td").get(14);
+                        String contextStr = context.text();
+                        if (contextStr != null && contextStr.contains("拒绝")) {
+                            continue;
+                        }
                         Element e = trElement.getElementsByTag("td").get(2);
                         if (e != null) {
                             String value = e.text();
