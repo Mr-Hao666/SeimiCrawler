@@ -27,10 +27,8 @@ public class GetPhoneSchedule {
      * 定时1小时
      */
     private final static long TIME = 1 * 60 * 1000 * 60 * 24;
-    private final static String TYPE = "贷";
-    private final static String COOKIE = "SESSION=19103c14-e8ed-4604-a919-4a562de531a6; UM_distinctid=165e267ba3d51-05ecb9c37acb89-9393265-100200-165e267ba3e22a; Qs_lvt_122950=1537101773; Hm_lvt_e1385c7969f3f5d9ffa4c00b2264865a=1537101774; Qs_pv_122950=1952889362640003800%2C2785160688135454000%2C2392956234183804400%2C1523922986538885000%2C3306519988348241000; ifLoginRememberName=checked; loginRememberedName=1489572523%40qq.com";
-    private final static String URL = "https://operate.miaodiyun.com/operate/detailIndustrySmsLogDetail.action?businessType=industrySMS";
-
+    private final static String URL_1 = "https://operate.miaodiyun.com/operate/detailIndustrySmsLogDetail.action?businessType=industrySMS";
+    private final static String URL_2 = "https://operate.miaodiyun.com/operate/detailMarketingSmsLogDetail.action?businessType=marketingSMS";
     private volatile boolean start = false;
 
     @Autowired
@@ -43,17 +41,32 @@ public class GetPhoneSchedule {
     private ServerConfig serverConfig;
 
     @Scheduled(fixedDelay = TIME)
-    public void getPhoneActivity() {
-        int pageNo = 1;
+    public void work(){
+        getPhoneActivity();
+        getMarketingActivity();
+    }
+
+    private void getPhoneActivity() {
         int pageSize = 200;
         Config config = configService.findByName(serverConfig.getPort() + "");
+        gotoWork(URL_1,pageSize, config);
+    }
+
+    private void getMarketingActivity() {
+        int pageSize = 200;
+        Config config = configService.findByName(serverConfig.getPort() + "");
+        gotoWork(URL_2, pageSize, config);
+    }
+
+    private void gotoWork(String url,int pageSize, Config config) {
+        int pageNo;
         while (!start) {
             start = true;
             if (config == null) {
                 config = configService.findByName(serverConfig.getPort() + "");
             }
             pageNo = config.getPageNo();
-            Element result = crawlerService.crawler(URL, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
+            Element result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
             while (null != result) {
                 Elements tbodyElements = result.getElementsByTag("tbody");
                 if (null != tbodyElements) {
@@ -74,15 +87,17 @@ public class GetPhoneSchedule {
                     }
                     if (repetition >= pageSize) {
                         log.info("当前页数据全部重复");
+                        return;
                     }
                     log.info("获取当前页成功,重复数据" + repetition);
                 }
                 pageNo++;
                 log.info("当前页码：" + pageNo);
-                result = crawlerService.crawler(URL, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
+                result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
             }
             start = false;
             log.info("当前无任务可执行");
+            return;
         }
     }
 }

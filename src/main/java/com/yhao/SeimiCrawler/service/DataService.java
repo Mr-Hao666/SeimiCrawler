@@ -23,15 +23,9 @@ public class DataService {
     }
 
     public int create(String value, String type) {
-        Data data = null;
-        data = dataMapper.findByValue(value);
-        if (data == null) {
-            data = new Data();
-            data.setValue(value);
-            data.setType(type);
-            return dataMapper.insert(data);
-        }
-        log.info("重复数据");
-        return 0;
+        Data data = new Data();
+        data.setValue(value);
+        data.setType(type);
+        return dataMapper.insert(data);
     }
 }

@@ -37,13 +37,12 @@ public class CrawlerService {
             headerMap.put("Accept-Language", "zh-CN,zh;q=0.9");
             headerMap.put("Cache-Control", "no-cache");
             headerMap.put("Connection", "keep-alive");
-//        headerMap.put("Content-Length", "144");
             headerMap.put("Content-Type", "application/x-www-form-urlencoded");
             headerMap.put("Cookie", cookie);
             headerMap.put("Host", "operate.miaodiyun.com");
             headerMap.put("Origin", "https://operate.miaodiyun.com");
             headerMap.put("Pragma", "no-cache");
-            headerMap.put("Referer", "https://operate.miaodiyun.com/operate/detailIndustrySmsLogDetail.action?businessType=industrySMS");
+            headerMap.put("Referer", url);
             headerMap.put("Upgrade-Insecure-Requests", "1");
             headerMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36)");
             Map<String, Object> paramMap = new HashMap<>();
