@@ -41,12 +41,12 @@ public class GetPhoneSchedule {
     @Autowired
     private ServerConfig serverConfig;
 
-    @Scheduled(fixedDelay = TIME)
-    public void getPhoneActivity() {
-        int pageSize = 200;
-        Config config = configService.findByName(serverConfig.getPort() + "");
-        gotoWork(URL_1,pageSize, config);
-    }
+//    @Scheduled(fixedDelay = TIME)
+//    public void getPhoneActivity() {
+//        int pageSize = 200;
+//        Config config = configService.findByName(serverConfig.getPort() + "");
+//        gotoWork(URL_1,pageSize, config);
+//    }
 
     @Scheduled(fixedDelay = TIME)
     public void getMarketingActivity() {
