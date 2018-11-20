@@ -356,6 +356,65 @@ public final class HttpClientUtil {
 		
 		return result;
 	}
+
+	public static String postHeader(String url, Map<String, String> headerMap, Map<String, Object> paramMap) {
+		// 创建默认的httpClient实例.
+		CloseableHttpClient httpClient = null;
+		if (url.startsWith("https://")) {
+			httpClient = createSSLInsecureClient();
+			if (httpClient == null) {
+				return null;
+			}
+		} else {
+			httpClient = HttpClients.createDefault();
+		}
+
+		// 创建httpPost
+		int status = -1;
+		String result = null;
+		HttpPost httpPost = null;
+		CloseableHttpResponse response = null;
+		try {
+
+			// 设置请求头部
+			httpPost = new HttpPost(url);
+			Header[] headers = toHeaders(headerMap);
+			if (null != headers && headers.length > 0) {
+				httpPost.setHeaders(headers);
+			}
+
+			// 设置请求参数
+			List<NameValuePair> valuePairs = toNameValuePairList(paramMap);
+			if (null != valuePairs && !valuePairs.isEmpty()) {
+				httpPost.setEntity(new UrlEncodedFormEntity(valuePairs, "UTF-8"));
+			}
+
+			long b = System.currentTimeMillis();
+			response = httpClient.execute(httpPost);
+			if (null != response && response.getStatusLine() != null) {
+				status = response.getStatusLine().getStatusCode();
+				if (status == HttpStatus.SC_OK || status == HttpStatus.SC_CREATED) {
+					Header[] returnHeaders = response.getHeaders("Set-Cookie");
+					// 打印响应状态
+					if (headers != null) {
+						result = returnHeaders[0].getElements()[0].getValue();
+					}
+				}
+			}
+			long e = System.currentTimeMillis();
+
+			// 打印响应内容
+			LOGGER.info("End request, cost time: {}", (e - b));
+			LOGGER.debug("Response content: {}", ((null != result && result.length() > 512) ? result.substring(0, 512) : result));
+
+		} catch (Exception e) {
+			LOGGER.error("Request failed, HTTP status code: {}, url: {}", status, url, e);
+		} finally {
+			closeResource(response, httpPost, httpClient);
+		}
+
+		return result;
+	}
 	
 	/**
 	 * 发送post请求，参数为字符串

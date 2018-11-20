@@ -15,15 +15,15 @@ import java.util.List;
 @Mapper
 public interface DataMapper {
 
-    @Select("SELECT * FROM data ORDER BY id ASC")
+    @Select("SELECT * FROM data_20181120 ORDER BY id ASC")
     List<Data> findAll();
 
-    @Insert("INSERT data(value,type,created_time)VALUES(#{value},#{type},current_timestamp())")
+    @Insert("INSERT data_20181120(value,type,created_time)VALUES(#{value},#{type},current_timestamp())")
     int insert(Data data);
 
-    @Select("SELECT * FROM data WHERE id IN(#{dataIds})")
+    @Select("SELECT * FROM data_20181120 WHERE id IN(#{dataIds})")
     List<Data> findByIds(@Param("dataIds") List<Integer> dataIds);
 
-    @Select("SELECT * FROM data WHERE value=#{value}")
+    @Select("SELECT * FROM data_20181120 WHERE value=#{value}")
     Data findByValue(String value);
 }

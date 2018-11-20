@@ -41,16 +41,18 @@ public class GetPhoneSchedule {
     @Autowired
     private ServerConfig serverConfig;
 
+//    //验证码
 //    @Scheduled(fixedDelay = TIME)
 //    public void getPhoneActivity() {
-//        int pageSize = 200;
+//        int pageSize = 600;
 //        Config config = configService.findByName(serverConfig.getPort() + "");
 //        gotoWork(URL_1,pageSize, config);
 //    }
 
-    @Scheduled(fixedDelay = TIME)
+    //会员营销
+//    @Scheduled(fixedDelay = TIME)
     public void getMarketingActivity() {
-        int pageSize = 200;
+        int pageSize = 600;
         Config config = configService.findByName(serverConfig.getPort() + "");
         gotoWork(URL_2, pageSize, config);
     }
@@ -71,11 +73,6 @@ public class GetPhoneSchedule {
                     Element tbodyElement = tbodyElements.get(0);
                     Elements trElements = tbodyElement.getElementsByTag("tr");
                     for (Element trElement : trElements) {
-                        Element context = trElement.getElementsByTag("td").get(14);
-                        String contextStr = context.text();
-                        if (contextStr != null && contextStr.contains("拒绝")) {
-                            continue;
-                        }
                         Element e = trElement.getElementsByTag("td").get(2);
                         if (e != null) {
                             String value = e.text();
@@ -92,6 +89,9 @@ public class GetPhoneSchedule {
                         return;
                     }
                     log.info("获取当前页成功,重复数据" + repetition);
+                } else {
+                    log.info("全部数据已获取完");
+                    return;
                 }
                 pageNo++;
                 log.info("当前页码：" + pageNo);
