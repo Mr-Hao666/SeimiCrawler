@@ -64,6 +64,10 @@ public class CrawlerService {
                 int repetition = 0;
                 Element tbodyElement = tbodyElements.get(0);
                 Elements trElements = tbodyElement.getElementsByTag("tr");
+                if (trElements == null || trElements.size() <= 0) {
+                    log.info("已获取全部数据");
+                    return;
+                }
                 for (Element trElement : trElements) {
                     Element e = trElement.getElementsByTag("td").get(2);
                     if (e != null) {
@@ -80,9 +84,6 @@ public class CrawlerService {
                     log.info("当前页数据全部重复");
                 }
                 log.info("获取当前页成功,重复数据" + repetition);
-            } else {
-                log.info("已获取全部数据");
-                return;
             }
             pageNo++;
             log.info("当前页码：" + pageNo);
