@@ -4,17 +4,6 @@ import com.yhao.SeimiCrawler.config.ServerConfig;
 import com.yhao.SeimiCrawler.domain.entity.Config;
 import com.yhao.SeimiCrawler.util.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,14 +11,8 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author ZengXiong
@@ -51,12 +34,10 @@ public class CrawlerService {
     private static final String PASSWORD = "Md18503052788";
 
     public void gotoWork(String url, int pageSize, Config config) {
-        int pageNo;
-
         if (config == null) {
             config = configService.findByName(serverConfig.getPort() + "");
         }
-        pageNo = config.getPageNo();
+        int pageNo = config.getPageNo();
         Element result = crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
         while (null != result) {
             Elements tbodyElements = result.getElementsByTag("tbody");

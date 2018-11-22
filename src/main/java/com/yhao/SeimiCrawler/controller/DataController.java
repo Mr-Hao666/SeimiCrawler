@@ -35,7 +35,7 @@ public class DataController {
     //短信验证码
     @ApiOperation(value = "开始获取短信验证码", httpMethod = "GET", notes = "短信验证码")
     @GetMapping(value = "/getPhone")
-    public BaseResult getPhoneActivity(@NotNull(message = "内容关键字")@ApiParam("内容关键字") @RequestParam String type,
+    public BaseResult getPhoneActivity(@NotNull(message = "内容关键字") @ApiParam("内容关键字") @RequestParam String type,
                                        @ApiParam("页码") @RequestParam Integer pageNo,
                                        @ApiParam("开始时间") @RequestParam String startTime,
                                        @ApiParam("结束时间") @RequestParam String endTime) {
@@ -49,18 +49,18 @@ public class DataController {
         while (!start) {
             start = true;
             crawlerService.gotoWork(URL_1, pageSize, config);
-            start = false;
         }
+        start = false;
         return new BaseResult();
     }
 
     //会员营销
     @ApiOperation(value = "开始获取会员营销", httpMethod = "GET", notes = "会员营销")
     @GetMapping(value = "/getMarketing")
-    public BaseResult getMarketingActivity(@NotNull(message = "内容关键字")@ApiParam("内容关键字") @RequestParam String type,
-                                     @ApiParam("页码") @RequestParam Integer pageNo,
-                                     @ApiParam("开始时间") @RequestParam String startTime,
-                                     @ApiParam("结束时间") @RequestParam String endTime) {
+    public BaseResult getMarketingActivity(@NotNull(message = "内容关键字") @ApiParam("内容关键字") @RequestParam String type,
+                                           @ApiParam("页码") @RequestParam Integer pageNo,
+                                           @ApiParam("开始时间") @RequestParam String startTime,
+                                           @ApiParam("结束时间") @RequestParam String endTime) {
         int pageSize = 600;
         Config config = new Config();
         config.setStartTime(startTime);
@@ -71,8 +71,8 @@ public class DataController {
         while (!start) {
             start = true;
             crawlerService.gotoWork(URL_2, pageSize, config);
-            start = false;
         }
+        start = false;
         return new BaseResult();
     }
 
