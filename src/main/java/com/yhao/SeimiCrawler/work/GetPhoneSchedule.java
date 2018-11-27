@@ -77,7 +77,9 @@ public class GetPhoneSchedule {
                         if (e != null) {
                             String value = e.text();
                             if (dataService.isNotExist(value)) {
-                                dataService.create(value, config.getType());
+                                Element phoneE = trElement.getElementsByTag("td").get(4);
+                                String phonetype = phoneE.text();
+                                dataService.create(value, config.getType(), phonetype);
                                 log.info(value);
                             } else {
                                 repetition++;

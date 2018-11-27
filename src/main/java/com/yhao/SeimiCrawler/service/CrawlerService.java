@@ -30,8 +30,8 @@ public class CrawlerService {
     private DataService dataService;
 
     private static final String COOKIE = "UM_distinctid=165efee581f0-029c8493ecd82a-333b5602-1fa400-165efee5820df; ifLoginRememberName=checked; Qs_lvt_122950=1537328699%2C1539670075%2C1539832521%2C1540372738%2C1542008522; Qs_pv_122950=2192971793787125800%2C306022982407525250%2C3193578770323489300%2C2424251150446799000%2C2367439715378550000; Hm_lvt_e1385c7969f3f5d9ffa4c00b2264865a=1539670076,1539832521,1540372739,1542008522; loginRememberedName=3110138680%40qq.com";
-    private static final String USERNAME = "3110138680@qq.com";
-    private static final String PASSWORD = "Md18503052788";
+    private static final String USERNAME = "2584446575@qq.com";
+    private static final String PASSWORD = "Md13686842169";
 
     public void gotoWork(String url, int pageSize, Config config) {
         if (config == null) {
@@ -54,7 +54,9 @@ public class CrawlerService {
                     if (e != null) {
                         String value = e.text();
                         if (dataService.isNotExist(value)) {
-                            dataService.create(value, config.getType());
+                            Element phoneE = trElement.getElementsByTag("td").get(4);
+                            String phonetype = phoneE.text();
+                            dataService.create(value, config.getType(), phonetype);
                             log.info(value);
                         } else {
                             repetition++;

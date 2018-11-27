@@ -26,4 +26,13 @@ public interface DataMapper {
 
     @Select("SELECT * FROM data_20181120 WHERE value=#{value}")
     Data findByValue(String value);
+
+    @Select("SELECT count(id) FROM data_20181120 WHERE type=#{type} AND created_time > #{createdTime}")
+    int findCountByType(@Param("type") String type, @Param("createdTime") String createdTime);
+
+    @Select("SELECT count(id) FROM data_20181120 WHERE phone_type=#{phoneType} AND created_time > #{createdTime}")
+    int findCountByPhoneType(@Param("phoneType") String phoneType, @Param("createdTime") String createdTime);
+
+    @Select("SELECT count(id) FROM data_20181120 WHERE type=#{type} AND phone_type=#{phoneType} AND created_time > #{createdTime}")
+    int findCountByPhoneTypeAndType(@Param("phoneType") String phoneType,@Param("type") String type, @Param("createdTime") String createdTime);
 }
