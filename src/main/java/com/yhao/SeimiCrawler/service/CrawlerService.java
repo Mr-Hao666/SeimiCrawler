@@ -104,7 +104,7 @@ public class CrawlerService {
         paramMap.put("page", pageNo);
         paramMap.put("submitByNavbar", true);
 //        paramMap.put("phoneType", 2);
-        if ("金融通道".equals(type)) {
+        if ("金融联通".equals(type)) {
             paramMap.put("channelId", 265);
         }else {
             paramMap.put("content", type);
