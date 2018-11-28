@@ -35,4 +35,13 @@ public interface DataMapper {
 
     @Select("SELECT count(id) FROM data_20181120 WHERE type=#{type} AND phone_type=#{phoneType} AND created_time > #{createdTime}")
     int findCountByPhoneTypeAndType(@Param("phoneType") String phoneType,@Param("type") String type, @Param("createdTime") String createdTime);
+
+    @Select("SELECT * FROM data_20181120 WHERE type=#{type} AND created_time > #{createdTime} ORDER BY id ASC LIMIT #{pageNo},#{pageSiize}")
+    List<Data> findByType(@Param("type") String type, @Param("createdTime") String createdTime, @Param("pageNo") Integer pageNo, @Param("pageSiize") Integer pageSize);
+
+    @Select("SELECT * FROM data_20181120 WHERE phone_type=#{phoneType} AND created_time > #{createdTime} ORDER BY id ASC LIMIT #{pageNo},#{pageSiize}")
+    List<Data> findByPhoneType(@Param("phoneType") String phoneType, @Param("createdTime") String createdTime,@Param("pageNo") Integer pageNo,@Param("pageSiize") Integer pageSize);
+
+    @Select("SELECT * FROM data_20181120 WHERE  type=#{type} AND phone_type=#{phoneType} AND created_time > #{createdTime} ORDER BY id ASC LIMIT #{pageNo},#{pageSiize}")
+    List<Data> findByPhoneTypeAndType(@Param("phoneType") String phoneType,@Param("type") String type, @Param("createdTime") String createdTime,@Param("pageNo") Integer pageNo,@Param("pageSiize") Integer pageSize);
 }

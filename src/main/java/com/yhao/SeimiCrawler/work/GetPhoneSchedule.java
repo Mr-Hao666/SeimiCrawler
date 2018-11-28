@@ -6,14 +6,10 @@ import com.yhao.SeimiCrawler.service.ConfigService;
 import com.yhao.SeimiCrawler.service.CrawlerService;
 import com.yhao.SeimiCrawler.service.DataService;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @author 杨浩
@@ -58,50 +54,11 @@ public class GetPhoneSchedule {
     }
 
     private void gotoWork(String url,int pageSize, Config config) {
-        int pageNo;
         while (!start) {
             start = true;
-            if (config == null) {
-                config = configService.findByName(serverConfig.getPort() + "");
-            }
-            pageNo = config.getPageNo();
-            Element result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
-            while (null != result) {
-                Elements tbodyElements = result.getElementsByTag("tbody");
-                if (null != tbodyElements) {
-                    int repetition = 0;
-                    Element tbodyElement = tbodyElements.get(0);
-                    Elements trElements = tbodyElement.getElementsByTag("tr");
-                    for (Element trElement : trElements) {
-                        Element e = trElement.getElementsByTag("td").get(2);
-                        if (e != null) {
-                            String value = e.text();
-                            if (dataService.isNotExist(value)) {
-                                Element phoneE = trElement.getElementsByTag("td").get(4);
-                                String phonetype = phoneE.text();
-                                dataService.create(value, config.getType(), phonetype);
-                                log.info(value);
-                            } else {
-                                repetition++;
-                            }
-                        }
-                    }
-                    if (repetition >= pageSize) {
-                        log.info("当前页数据全部重复");
-                        return;
-                    }
-                    log.info("获取当前页成功,重复数据" + repetition);
-                } else {
-                    log.info("全部数据已获取完");
-                    return;
-                }
-                pageNo++;
-                log.info("当前页码：" + pageNo);
-                result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
-            }
-            start = false;
-            log.info("当前无任务可执行");
-            return;
+            crawlerService.gotoWork(url, pageSize, config);
         }
+        start = false;
+        log.info("当前无任务可执行");
     }
 }

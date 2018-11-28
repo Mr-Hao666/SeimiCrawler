@@ -5,10 +5,8 @@ package com.yhao.SeimiCrawler.service;
  * @create 2018-11-09 21:40
  **/
 
-import com.yhao.SeimiCrawler.domain.Data4EMapper;
 import com.yhao.SeimiCrawler.domain.DataMapper;
 import com.yhao.SeimiCrawler.domain.entity.Data;
-import com.yhao.SeimiCrawler.domain.entity.Data4E;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,9 +21,6 @@ public class DataService {
     @Autowired
     private DataMapper dataMapper;
 
-    @Autowired
-    private Data4EMapper data4EMapper;
-
     public boolean isNotExist(String value) {
         return dataMapper.findByValue(value) == null;
     }
@@ -38,16 +33,16 @@ public class DataService {
         return dataMapper.insert(data);
     }
 
-    public List<Data4E> getList(String phoneType, String type, String createdTime, Integer pageNo, Integer pageSize) {
+    public List<Data> getList(String phoneType, String type, String createdTime, Integer pageNo, Integer pageSize) {
         if (phoneType == null && type == null) {
             return new ArrayList<>(0);
         }
         if (type == null) {
-            return data4EMapper.findByPhoneType(phoneType, createdTime, pageNo, pageSize);
+            return dataMapper.findByPhoneType(phoneType, createdTime, pageNo, pageSize);
         } else if (phoneType == null) {
-            return data4EMapper.findByType(type, createdTime, pageNo, pageSize);
+            return dataMapper.findByType(type, createdTime, pageNo, pageSize);
         } else {
-            return data4EMapper.findByPhoneTypeAndType(phoneType, type, createdTime, pageNo, pageSize);
+            return dataMapper.findByPhoneTypeAndType(phoneType, type, createdTime, pageNo, pageSize);
         }
     }
 
