@@ -54,52 +54,6 @@ public class GetPhoneSchedule {
     public void getMarketingActivity() {
         int pageSize = 600;
         Config config = configService.findByName(serverConfig.getPort() + "");
-        gotoWork(URL_2, pageSize, config);
-    }
-
-    private void gotoWork(String url,int pageSize, Config config) {
-        int pageNo;
-        while (!start) {
-            start = true;
-            if (config == null) {
-                config = configService.findByName(serverConfig.getPort() + "");
-            }
-            pageNo = config.getPageNo();
-            Element result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
-            while (null != result) {
-                Elements tbodyElements = result.getElementsByTag("tbody");
-                if (null != tbodyElements) {
-                    int repetition = 0;
-                    Element tbodyElement = tbodyElements.get(0);
-                    Elements trElements = tbodyElement.getElementsByTag("tr");
-                    for (Element trElement : trElements) {
-                        Element e = trElement.getElementsByTag("td").get(2);
-                        if (e != null) {
-                            String value = e.text();
-                            if (dataService.isNotExist(value)) {
-                                dataService.create(value, config.getType());
-                                log.info(value);
-                            } else {
-                                repetition++;
-                            }
-                        }
-                    }
-                    if (repetition >= pageSize) {
-                        log.info("当前页数据全部重复");
-                        return;
-                    }
-                    log.info("获取当前页成功,重复数据" + repetition);
-                } else {
-                    log.info("全部数据已获取完");
-                    return;
-                }
-                pageNo++;
-                log.info("当前页码：" + pageNo);
-                result = crawlerService.crawler(url, config.getCookie(), config.getType(), config.getStartTime(), config.getEndTime(), pageNo, pageSize);
-            }
-            start = false;
-            log.info("当前无任务可执行");
-            return;
-        }
+//        gotoWork(URL_2, pageSize, config);
     }
 }

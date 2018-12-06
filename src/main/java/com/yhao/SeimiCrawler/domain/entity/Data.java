@@ -9,13 +9,15 @@ import java.util.Date;
 @ApiModel("数据")
 public class Data implements Serializable {
     private Integer id;
-
-    @ApiModelProperty("值")
-    private String value;
-    @ApiModelProperty("类型")
-    private String type;
-    @ApiModelProperty("创建时间")
-    private Date createdTime;
+    private String phone;
+    private String email;
+    private String channel;
+    private String phoneType;
+    private String province;
+    private String city;
+    private Date beginTime;
+    private Date endTime;
+    private String content;
 
     private static final long serialVersionUID = -1911255157732700636L;
 
@@ -27,37 +29,75 @@ public class Data implements Serializable {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getType() {
-        return type;
+    public String getEmail() {
+        return email;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
-    @Override
-    public String toString() {
-        return "Data{" +
-                "id=" + id +
-                ", value='" + value + '\'' +
-                ", type='" + type + '\'' +
-                ", createdTime=" + createdTime +
-                '}';
+    public String getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

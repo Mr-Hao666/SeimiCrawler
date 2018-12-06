@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
  * @create 2018-11-10 9:25
  **/
 @Mapper
-public interface ConfigMapper {
+public interface ConfigMapper{
 
     @Select("SELECT * FROM config WHERE name=#{name}")
     Config findByName(String name);

@@ -27,7 +27,8 @@ public class DataController {
     private final static String URL_1 = "https://operate.miaodiyun.com/operate/detailIndustrySmsLogDetail.action?businessType=industrySMS";
     private final static String URL_2 = "https://operate.miaodiyun.com/operate/detailMarketingSmsLogDetail.action?businessType=marketingSMS";
     private final static String LOGIN_URL = "https://operate.miaodiyun.com/operate/login.action";
-    private volatile boolean start = false;
+    private volatile boolean start1 = false;
+    private volatile boolean start2 = false;
 
     @Autowired
     private CrawlerService crawlerService;
@@ -46,11 +47,11 @@ public class DataController {
         config.setPageNo(pageNo);
         config.setEndTime(endTime);
         config.setCookie(crawlerService.getSession(LOGIN_URL));
-        while (!start) {
-            start = true;
+        while (!start1) {
+            start1 = true;
             crawlerService.gotoWork(URL_1, pageSize, config);
         }
-        start = false;
+        start1 = false;
         return new BaseResult();
     }
 
@@ -68,11 +69,11 @@ public class DataController {
         config.setPageNo(pageNo);
         config.setEndTime(endTime);
         config.setCookie(crawlerService.getSession(LOGIN_URL));
-        while (!start) {
-            start = true;
+        while (!start2) {
+            start2 = true;
             crawlerService.gotoWork(URL_2, pageSize, config);
         }
-        start = false;
+        start2 = false;
         return new BaseResult();
     }
 

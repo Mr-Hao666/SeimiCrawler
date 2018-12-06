@@ -2,6 +2,8 @@ package com.yhao.SeimiCrawler.service;
 
 import com.yhao.SeimiCrawler.config.ServerConfig;
 import com.yhao.SeimiCrawler.domain.entity.Config;
+import com.yhao.SeimiCrawler.domain.entity.Data;
+import com.yhao.SeimiCrawler.util.DateUtil;
 import com.yhao.SeimiCrawler.util.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -19,8 +21,8 @@ import java.util.Map;
  * @Description 爬虫service
  * @Date 2018/09/19 15:36
  */
-@Component
 @Slf4j
+@Component
 public class CrawlerService {
     @Autowired
     private ConfigService configService;
@@ -30,8 +32,8 @@ public class CrawlerService {
     private DataService dataService;
 
     private static final String COOKIE = "UM_distinctid=165efee581f0-029c8493ecd82a-333b5602-1fa400-165efee5820df; ifLoginRememberName=checked; Qs_lvt_122950=1537328699%2C1539670075%2C1539832521%2C1540372738%2C1542008522; Qs_pv_122950=2192971793787125800%2C306022982407525250%2C3193578770323489300%2C2424251150446799000%2C2367439715378550000; Hm_lvt_e1385c7969f3f5d9ffa4c00b2264865a=1539670076,1539832521,1540372739,1542008522; loginRememberedName=3110138680%40qq.com";
-    private static final String USERNAME = "3110138680@qq.com";
-    private static final String PASSWORD = "Md18503052788";
+    private static final String USERNAME = "1065501261@qq.com";
+    private static final String PASSWORD = "Md13686969509";
 
     public void gotoWork(String url, int pageSize, Config config) {
         if (config == null) {
@@ -42,7 +44,6 @@ public class CrawlerService {
         while (null != result) {
             Elements tbodyElements = result.getElementsByTag("tbody");
             if (null != tbodyElements) {
-                int repetition = 0;
                 Element tbodyElement = tbodyElements.get(0);
                 Elements trElements = tbodyElement.getElementsByTag("tr");
                 if (trElements == null || trElements.size() <= 0) {
@@ -50,21 +51,39 @@ public class CrawlerService {
                     return;
                 }
                 for (Element trElement : trElements) {
-                    Element e = trElement.getElementsByTag("td").get(2);
-                    if (e != null) {
-                        String value = e.text();
-                        if (dataService.isNotExist(value)) {
-                            dataService.create(value, config.getType());
-                            log.info(value);
-                        } else {
-                            repetition++;
-                        }
-                    }
+                    Data data = new Data();
+                    //email 0
+                    Element email = trElement.getElementsByTag("td").get(0);
+                    data.setEmail(email.text());
+                    //channel 1
+                    Element channel = trElement.getElementsByTag("td").get(1);
+                    data.setChannel(channel.text());
+                    //phone 2
+                    Element phone = trElement.getElementsByTag("td").get(2);
+                    data.setPhone(phone.text());
+                    //phoneType 4
+                    Element phoneType = trElement.getElementsByTag("td").get(4);
+                    data.setPhoneType(phoneType.text());
+                    // province 5
+                    Element province = trElement.getElementsByTag("td").get(5);
+                    data.setProvince(province.text());
+                    // city 6
+                    Element city = trElement.getElementsByTag("td").get(6);
+                    data.setCity(city.text());
+                    //beginTime 10
+                    Element beginTime = trElement.getElementsByTag("td").get(10);
+                    data.setBeginTime(DateUtil.stringToDate(beginTime.text()));
+                    //endTime 11
+                    Element endTime = trElement.getElementsByTag("td").get(11);
+                    data.setEndTime(DateUtil.stringToDate(endTime.text()));
+                    //content 14
+                    Element content = trElement.getElementsByTag("td").get(14);
+                    data.setContent(content.text());
+
+                    String value = phone.text();
+                    log.info(value);
+                    dataService.insert(data);
                 }
-                if (repetition >= pageSize) {
-                    log.info("当前页数据全部重复");
-                }
-                log.info("获取当前页成功,重复数据" + repetition);
             }
             pageNo++;
             log.info("当前页码：" + pageNo);
@@ -104,7 +123,7 @@ public class CrawlerService {
 //            paramMap.put("channelId", 265);
         paramMap.put("startTime", startTime);
         paramMap.put("endTime", endTime);
-        paramMap.put("content", type);
+//        paramMap.put("content", type);
         return paramMap;
     }
 

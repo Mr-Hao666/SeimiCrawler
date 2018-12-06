@@ -3,7 +3,6 @@ package com.yhao.SeimiCrawler.service;
 import com.yhao.SeimiCrawler.domain.ConfigMapper;
 import com.yhao.SeimiCrawler.domain.entity.Config;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,10 +11,9 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
-public class ConfigService {
-    @Autowired
-    private ConfigMapper configMapper;
+public class ConfigService{
 
+ private ConfigMapper configMapper;
     public Config findByName(String name) {
         return configMapper.findByName(name);
     }

@@ -3,10 +3,7 @@ package com.yhao.SeimiCrawler.domain;
 import com.yhao.SeimiCrawler.domain.entity.Data;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * @author 杨浩
@@ -15,15 +12,9 @@ import java.util.List;
 @Mapper
 public interface DataMapper {
 
-    @Select("SELECT * FROM data_20181120 ORDER BY id ASC")
-    List<Data> findAll();
-
-    @Insert("INSERT data_20181120(value,type,created_time)VALUES(#{value},#{type},current_timestamp())")
-    int insert(Data data);
-
-    @Select("SELECT * FROM data_20181120 WHERE id IN(#{dataIds})")
-    List<Data> findByIds(@Param("dataIds") List<Integer> dataIds);
-
-    @Select("SELECT * FROM data_20181120 WHERE value=#{value}")
+    @Select("SELECT * FROM data_20181206 WHERE phone=#{value}")
     Data findByValue(String value);
+
+    @Insert("INSERT INTO `data_20181206` (`email`, `channel`, `phone`, `phone_type`, `province`, `city`, `begin_time`, `end_time`, `content`) VALUES (#{email}, #{channel}, #{phone}, #{phoneType}, #{province}, #{city}, #{beginTime}, #{endTime}, #{content})")
+    int insert(Data data);
 }

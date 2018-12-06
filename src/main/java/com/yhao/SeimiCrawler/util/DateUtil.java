@@ -26,7 +26,23 @@ public class DateUtil {
 	private final static SimpleDateFormat ymd4 = new SimpleDateFormat("yyyy.MM.dd");
 	private final static SimpleDateFormat ymdhms1 = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 	private final static SimpleDateFormat ymdhms2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
+	/**
+	 * 字符串转换成日期
+	 *
+	 * @param strDate 日期字符串
+	 */
+	public static Date stringToDate(String strDate) {
+		if (StringUtil.isBlank(strDate)) {
+			return null;
+		}
+		Date date = null;
+		try {
+			date = ymdhms2.parse(strDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 	/**
 	 * HH:mm
 	 */

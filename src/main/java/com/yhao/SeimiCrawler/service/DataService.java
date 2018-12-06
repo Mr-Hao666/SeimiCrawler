@@ -22,10 +22,7 @@ public class DataService {
         return dataMapper.findByValue(value) == null;
     }
 
-    public int create(String value, String type) {
-        Data data = new Data();
-        data.setValue(value);
-        data.setType(type);
+    public int insert(Data data) {
         return dataMapper.insert(data);
     }
 }
